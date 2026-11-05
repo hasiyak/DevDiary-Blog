@@ -7,9 +7,6 @@ from flask import Flask, abort, flash, g, jsonify, redirect, render_template, re
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
-EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
-
-
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
@@ -82,6 +79,16 @@ def create_app(test_config=None):
         slug = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
         return slug or "untitled-post"
 
+    def is_valid_email(email):
+        if not email or " " in email or email.count("@") != 1:
+            return False
+        local, domain = email.split("@", 1)
+        if not local or "." not in domain:
+            return False
+        if domain.startswith(".") or domain.endswith("."):
+            return False
+        return True
+
     def login_required(view):
         @wraps(view)
         def wrapped(*args, **kwargs):
@@ -115,7 +122,7 @@ def create_app(test_config=None):
     @app.route("/subscribe", methods=["POST"])
     def subscribe():
         email = (request.form.get("email") or "").strip()
-        if not EMAIL_RE.match(email):
+        if not is_valid_email(email):
             return jsonify({"success": False, "message": "Please provide a valid email address."}), 400
         try:
             db = get_db()
@@ -230,4 +237,4 @@ app = create_app()
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=os.getenv("FLASK_DEBUG") == "1")
