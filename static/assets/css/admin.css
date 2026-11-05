@@ -1,0 +1,262 @@
+/* ==========================================================================
+   DevDiary Admin Panel Stylesheet (admin.css)
+   ========================================================================== */
+
+:root {
+    --brand-color: #ff7518;
+    --brand-hover: #e0620f;
+    --brand-light: #fff9f5;
+    --brand-border: #ffe5d3;
+    --bg-color: #fffaf6;
+    --text-dark: #212529;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* ==========================================================================
+   Sidebar Navigation (Desktop)
+   ========================================================================== */
+.admin-sidebar {
+    background: #ffffff;
+    border-right: 1px solid var(--brand-border);
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    z-index: 1040;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s ease;
+}
+
+.admin-sidebar .nav-link {
+    color: #6c757d;
+    border-radius: 10px;
+    margin: 6px 16px;
+    padding: 12px 18px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+}
+
+.admin-sidebar .nav-link:hover, 
+.admin-sidebar .nav-link.active {
+    background-color: var(--brand-light);
+    color: var(--brand-color);
+    font-weight: 600;
+}
+
+.admin-sidebar .nav-link.text-danger:hover {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.admin-sidebar .nav-link i {
+    width: 24px;
+    font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   Main Content Layout - Full Width Utilization
+   ========================================================================== */
+.admin-main {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+    max-width: calc(100% - 260px);
+    padding: 30px 40px;
+    transition: all 0.3s ease;
+    min-height: 100vh;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 991.98px) {
+    .admin-sidebar {
+        transform: translateX(-100%);
+    }
+    .admin-sidebar.show {
+        transform: translateX(0);
+    }
+    .admin-main {
+        margin-left: 0;
+        width: 100%;
+        max-width: 100%;
+        padding: 20px 16px;
+    }
+    .sidebar-backdrop {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.45);
+        z-index: 1035;
+    }
+    .sidebar-backdrop.show {
+        display: block;
+    }
+}
+
+/* ==========================================================================
+   Cards & Component Elements
+   ========================================================================== */
+.theme-card {
+    background: #ffffff;
+    border: 1px solid var(--brand-border);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    transition: transform 0.25s, box-shadow 0.25s;
+    width: 100%;
+}
+
+.theme-card:hover {
+    box-shadow: 0 10px 24px rgba(255, 117, 24, 0.08);
+}
+
+.icon-box {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    background-color: var(--brand-light);
+    color: var(--brand-color);
+    border: 1px solid var(--brand-border);
+}
+
+/* Brand Buttons */
+.btn-brand {
+    background-color: var(--brand-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-brand:hover, 
+.btn-brand:focus {
+    background-color: var(--brand-hover);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(255, 117, 24, 0.35);
+}
+
+/* Table Design */
+.table th {
+    color: #6c757d;
+    font-weight: 600;
+    border-bottom: 2px solid var(--brand-border);
+    padding: 14px 12px;
+    font-size: 0.9rem;
+}
+
+.table td {
+    vertical-align: middle;
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--brand-border);
+    font-size: 0.95rem;
+}
+
+/* Form Inputs */
+.form-control, .form-select {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 11px 16px;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--brand-color);
+    box-shadow: 0 0 0 0.25rem rgba(255, 117, 24, 0.25);
+}
+
+/* Toast Notifications Animation */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.custom-admin-toast {
+    animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+    border: none !important;
+}
+
+/* ==========================================================================
+   CKEditor 5 Custom Styling (Spacious Textarea & Brand Integration)
+   ========================================================================== */
+.ck-editor {
+    width: 100% !important;
+}
+
+.ck-editor__editable_inline {
+    min-height: 380px !important;
+    max-height: 700px;
+    font-size: 1.02rem;
+    line-height: 1.8;
+    padding: 20px 24px !important;
+    color: #212529;
+    background-color: #ffffff !important;
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}
+
+.ck.ck-toolbar {
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    background-color: #fafafa !important;
+    border-color: #dee2e6 !important;
+    padding: 6px 10px !important;
+}
+
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+    border-color: #dee2e6 !important;
+}
+
+.ck.ck-editor__main>.ck-editor__editable.ck-focused {
+    border-color: var(--brand-color) !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 117, 24, 0.2) !important;
+}
+
+/* ==========================================================================
+   Admin Login Page Styling
+   ========================================================================== */
+.login-wrapper {
+    background-color: var(--bg-color);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-card {
+    background: #ffffff;
+    border: 1px solid var(--brand-border);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(255, 117, 24, 0.08);
+    width: 100%;
+    max-width: 440px;
+}
+

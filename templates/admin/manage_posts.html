@@ -1,0 +1,92 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Manage Articles - DevDiary Admin{% endblock %}
+
+{% block content %}
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1 text-dark">Manage Articles</h2>
+            <p class="text-muted small mb-0">View, update, or remove articles from your blog.</p>
+        </div>
+        <a href="{{ url_for('add_post') }}" class="btn-brand">
+            <i class="fas fa-plus me-2"></i> Add New Post
+        </a>
+    </div>
+
+    <!-- Articles Table Card -->
+    <div class="theme-card w-100 p-4">
+        <div class="table-responsive">
+            <table class="table table-borderless align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">ID</th>
+                        <th>Article</th>
+                        <th>Category</th>
+                        <th>Date Published</th>
+                        <th>Likes</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if posts %}
+                        {% for post in posts %}
+                        <tr>
+                            <td class="text-muted fw-bold">#{{ post.id }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ url_for('static', filename='assets/images/' ~ (post.image if (post.image and post.image.startswith('posts/')) else ('posts/' ~ (post.image if post.image else 'blog1.jpg')))) }}" 
+                                         alt="{{ post.title }}" 
+                                         class="rounded-3 me-3" 
+                                         style="width: 48px; height: 48px; object-fit: cover;">
+                                    <div>
+                                        <a href="{{ url_for('single_post', id=post.id) }}" target="_blank" class="fw-bold text-dark text-decoration-none d-block text-truncate" style="max-width: 320px;">
+                                            {{ post.title }}
+                                        </a>
+                                        <span class="text-muted small">{{ (post.content | striptags)[:60] }}...</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge rounded-pill" style="background-color: var(--brand-light); color: var(--brand-color); border: 1px solid var(--brand-border);">
+                                    {{ post.category }}
+                                </span>
+                            </td>
+                            <td class="text-muted small">
+                                {% if post.created_at %}{{ post.created_at.strftime('%b %d, %Y') }}{% else %}N/A{% endif %}
+                            </td>
+                            <td class="text-muted small">
+                                <i class="fas fa-heart text-danger me-1"></i> {{ post.likes or 0 }}
+                            </td>
+                            <td class="text-end">
+                                <a href="{{ url_for('manage_comments', post_id=post.id) }}" class="btn btn-sm me-1" style="background-color: #f8f9fa; color: var(--brand-color); border: 1px solid #dee2e6;" title="View Comments for this Article">
+                                    <i class="fas fa-comments"></i>
+                                </a>
+                                <a href="{{ url_for('single_post', id=post.id) }}" target="_blank" class="btn btn-sm me-1" style="background-color: #f8f9fa; color: #495057; border: 1px solid #dee2e6;" title="View Live Article">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="{{ url_for('edit_post', id=post.id) }}" class="btn btn-sm me-1" style="background-color: #f8f9fa; color: #0d6efd; border: 1px solid #dee2e6;" title="Edit Article">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" 
+                                        class="btn btn-sm" 
+                                        style="background-color: #f8f9fa; color: #dc3545; border: 1px solid #dee2e6;" 
+                                        title="Delete Article"
+                                        onclick="confirmDelete('{{ url_for('delete_post', id=post.id) }}', '{{ post.title|replace('\'', '\\\'') }}', 'Article')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-5">
+                                <i class="far fa-folder-open fa-2x mb-2 d-block text-muted opacity-50"></i>
+                                No articles published yet. Click <strong>Add New Post</strong> to get started.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

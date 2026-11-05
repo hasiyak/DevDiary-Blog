@@ -1,0 +1,128 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Manage Comments - DevDiary Admin{% endblock %}
+
+{% block content %}
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1 text-dark">Manage Comments</h2>
+            <p class="text-muted small mb-0">Review and moderate user discussions across all articles.</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <a href="{{ url_for('manage_posts') }}" class="btn btn-light border fw-semibold px-3">
+                <i class="fas fa-file-alt me-2"></i> View Articles
+            </a>
+        </div>
+    </div>
+
+    <!-- Filter Bar Card -->
+    <div class="theme-card w-100 p-3 mb-4">
+        <div class="row g-3 align-items-center">
+            <div class="col-12 col-md-auto fw-bold text-dark small">
+                <i class="fas fa-filter text-muted me-1"></i> Filter by Article:
+            </div>
+            <div class="col-12 col-md-6 col-lg-5">
+                <select class="form-select form-select-sm" onchange="if(this.value) window.location.href=this.value;">
+                    <option value="{{ url_for('manage_comments') }}" {% if not selected_post_id %}selected{% endif %}>
+                        -- All Articles (Show all comments) --
+                    </option>
+                    {% if posts_list %}
+                        {% for p in posts_list %}
+                        <option value="{{ url_for('manage_comments', post_id=p.id) }}" {% if selected_post_id == p.id %}selected{% endif %}>
+                            #{{ p.id }} - {{ p.title }}
+                        </option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+            
+            {% if selected_post_id %}
+            <div class="col-12 col-md-auto ms-md-auto d-flex align-items-center gap-2">
+                <span class="badge rounded-pill px-3 py-2" style="background-color: var(--brand-light); color: var(--brand-color); border: 1px solid var(--brand-border); font-size: 0.85rem;">
+                    Active Filter: <strong>{{ selected_post_title }}</strong> ({{ comments|length }})
+                </span>
+                <a href="{{ url_for('manage_comments') }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                    <i class="fas fa-times me-1"></i> Clear Filter
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Comments Table Card -->
+    <div class="theme-card w-100 p-4">
+        <div class="table-responsive">
+            <table class="table table-borderless align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">ID</th>
+                        <th>User</th>
+                        <th>Article</th>
+                        <th>Comment</th>
+                        <th>Date</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if comments %}
+                        {% for c in comments %}
+                        <tr>
+                            <td class="text-muted fw-bold">#{{ c.id }}</td>
+                            <td>
+                                <div class="fw-bold text-dark">{{ c.name }}</div>
+                                <div class="text-muted small">{{ c.email }}</div>
+                            </td>
+                            <td>
+                                {% if c.post_id %}
+                                    <a href="{{ url_for('single_post', id=c.post_id) }}" target="_blank" class="fw-semibold text-decoration-none text-dark d-block text-truncate" style="max-width: 240px;">
+                                        {{ c.post_title or ('Post #' ~ c.post_id) }}
+                                    </a>
+                                    {% if not selected_post_id %}
+                                    <a href="{{ url_for('manage_comments', post_id=c.post_id) }}" class="small text-decoration-none" style="color: var(--brand-color); font-size: 0.75rem;">
+                                        <i class="fas fa-filter"></i> Only this post
+                                    </a>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="text-muted small">General Discussion</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="text-muted small text-truncate" style="max-width: 320px;" title="{{ c.comment }}">
+                                    {{ c.comment }}
+                                </div>
+                            </td>
+                            <td class="text-muted small">
+                                {% if c.created_at %}{{ c.created_at.strftime('%b %d, %Y') }}{% else %}N/A{% endif %}
+                            </td>
+                            <td class="text-end">
+                                <button type="button" 
+                                        class="btn btn-sm" 
+                                        style="background-color: #f8f9fa; color: #dc3545; border: 1px solid #dee2e6;" 
+                                        title="Delete Comment"
+                                        onclick="confirmDelete('{{ url_for('delete_comment', id=c.id, post_id=selected_post_id) if selected_post_id else url_for('delete_comment', id=c.id) }}', 'comment by {{ c.name|replace('\'', '\\\'') }}', 'Comment')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-5">
+                                <i class="far fa-comments fa-2x mb-2 d-block text-muted opacity-50"></i>
+                                {% if selected_post_id %}
+                                    No comments found for this article.
+                                    <div class="mt-2">
+                                        <a href="{{ url_for('manage_comments') }}" class="btn btn-sm btn-brand">View All Comments</a>
+                                    </div>
+                                {% else %}
+                                    No comments found. Comments posted by visitors will appear here.
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

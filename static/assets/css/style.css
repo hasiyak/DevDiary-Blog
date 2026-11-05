@@ -1,0 +1,495 @@
+/* ==========================================================================
+   DevDiary - Main Stylesheet (Clean, Modern & Fully Mobile-Responsive)
+   ========================================================================== */
+
+:root {
+    --brand-primary: #ff7518;
+    --brand-primary-hover: #e0620f;
+    --brand-light: #fff9f5;
+    --brand-border: #ffe5d3;
+    --brand-border-alt: #f8b488;
+    --text-dark: #212529;
+    --text-muted: #6c757d;
+}
+
+/* Prevent horizontal overflow without breaking position: sticky */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    max-width: 100%;
+    overflow-x: clip; /* clip prevents horizontal scrollbars without breaking position: sticky */
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #fcfcfc;
+}
+
+/* Ensure sticky navbar remains firmly at the top when scrolling */
+.sticky-top {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1030 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Buttons & Themes
+   -------------------------------------------------------------------------- */
+.custom-theme-btn {
+    color: var(--brand-primary);
+    border-color: var(--brand-primary);
+    transition: all 0.25s ease;
+}
+
+.custom-theme-btn:hover {
+    background-color: var(--brand-primary);
+    border-color: var(--brand-primary);
+    color: #ffffff;
+}
+
+.btn-brand {
+    background-color: var(--brand-primary);
+    color: #ffffff;
+    border: none;
+    transition: all 0.25s ease;
+}
+
+.btn-brand:hover, .btn-brand:focus {
+    background-color: var(--brand-primary-hover);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(255, 117, 24, 0.3);
+}
+
+.view-all-btn {
+    background-color: var(--brand-light);
+    color: var(--brand-primary);
+    border: 2px solid var(--brand-primary);
+    transition: all 0.3s ease;
+}
+
+.view-all-btn:hover {
+    background-color: var(--brand-primary);
+    color: #ffffff !important;
+    box-shadow: 0 8px 18px rgba(255, 117, 24, 0.25) !important;
+    transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   Forms & Inputs
+   -------------------------------------------------------------------------- */
+.form-control:focus {
+    border-color: var(--brand-primary) !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 117, 24, 0.2) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Navbar Styles & Mobile Responsiveness
+   -------------------------------------------------------------------------- */
+.navbar-logo {
+    width: 50px;
+    height: 50px;
+    transition: transform 0.3s ease;
+}
+
+@media (min-width: 992px) {
+    .navbar-logo {
+        width: 65px;
+        height: 65px;
+    }
+}
+
+.navbar-nav .nav-link {
+    position: relative;
+    color: #333 !important;
+    padding: 0.6rem 1rem !important;
+    transition: color 0.2s ease;
+}
+
+/* Desktop hover underline effect */
+@media (min-width: 992px) {
+    .navbar-nav .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 50%;
+        background-color: var(--brand-primary);
+        transition: width 0.3s ease-in-out;
+        transform: translateX(-50%);
+    }
+
+    .navbar-nav .nav-link:hover::after {
+        width: 80%;
+    }
+}
+
+/* Mobile navbar item styles */
+@media (max-width: 991.98px) {
+    .navbar-nav {
+        padding: 1rem 0;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 1.1rem;
+        border-radius: 8px;
+        margin: 2px 0;
+    }
+
+    .navbar-nav .nav-link.active {
+        background-color: var(--brand-light);
+        color: var(--brand-primary) !important;
+    }
+
+    .navbar-collapse {
+        background-color: #ffffff;
+        border-top: 1px solid #f0f0f0;
+        padding-top: 0.75rem;
+        padding-bottom: 1rem;
+    }
+}
+
+.navbar-nav .nav-link.active {
+    color: var(--brand-primary) !important;
+    font-weight: 700;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--brand-primary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Search Bar & Dropdown Results
+   -------------------------------------------------------------------------- */
+.navbar-search-container {
+    width: 100%;
+    max-width: 320px;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-search-container {
+        max-width: 100%;
+        margin-top: 0.75rem;
+    }
+}
+
+#searchResults {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+#searchResults::-webkit-scrollbar {
+    width: 6px;
+}
+
+#searchResults::-webkit-scrollbar-thumb {
+    background-color: #e5e5e5;
+    border-radius: 4px;
+}
+
+.dropdown-item {
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: var(--brand-light) !important;
+    color: var(--brand-primary) !important;
+}
+
+.dropdown-item:active {
+    background-color: var(--brand-primary) !important;
+    color: #ffffff !important;
+}
+
+/* --------------------------------------------------------------------------
+   Cards & Hover Effects (Optimized for Touch & Desktop)
+   -------------------------------------------------------------------------- */
+.blog-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .blog-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 28px rgba(0,0,0,0.08) !important;
+    }
+
+    .blog-card:hover .zoom-img {
+        transform: scale(1.06);
+    }
+}
+
+.zoom-img {
+    transition: transform 0.4s ease;
+}
+
+.contact-hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-bottom: 4px solid transparent !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .contact-hover-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 1rem 2.5rem rgba(0,0,0,.1) !important;
+        border-bottom: 4px solid var(--brand-primary) !important;
+    }
+}
+
+.action-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .action-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.8rem 2rem rgba(0,0,0,.08) !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Accordion
+   -------------------------------------------------------------------------- */
+.accordion-button:not(.collapsed) {
+    color: var(--brand-primary);
+    background-color: var(--brand-light);
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 0.25rem rgba(255, 117, 24, 0.2);
+}
+
+.accordion-button {
+    padding: 1.15rem 1.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+.custom-footer-link {
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+}
+
+.custom-footer-link:hover {
+    color: var(--brand-primary) !important;
+    transform: translateX(4px);
+}
+
+/* --------------------------------------------------------------------------
+   Floating Toast Notification (Responsive)
+   -------------------------------------------------------------------------- */
+#customToast {
+    z-index: 1060;
+    max-width: calc(100vw - 2rem);
+    pointer-events: none;
+}
+
+#customToast > * {
+    pointer-events: auto;
+}
+
+@media (max-width: 575.98px) {
+    #customToast {
+        left: 1rem;
+        right: 1rem;
+        top: 1rem !important;
+        margin-top: 0 !important;
+    }
+
+    #toastContent {
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Hero & Background Overlays
+   -------------------------------------------------------------------------- */
+.hero-gradient-overlay {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.82) 50%, rgba(255, 255, 255, 0.3) 100%);
+}
+
+@media (max-width: 767.98px) {
+    .hero-gradient-overlay {
+        background: rgba(255, 255, 255, 0.92);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Pagination (Mobile-Friendly)
+   -------------------------------------------------------------------------- */
+.page-btn-custom {
+    width: 40px;
+    height: 40px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+@media (min-width: 576px) {
+    .page-btn-custom {
+        width: 46px;
+        height: 46px;
+        font-size: 1rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Article Content Styling (CKEditor 5 HTML Output Support)
+   -------------------------------------------------------------------------- */
+.article-body {
+    line-height: 1.85;
+    font-size: 1.05rem;
+    color: #2b2b2b;
+    word-break: break-word;
+}
+
+.article-body p {
+    margin-bottom: 1.35rem;
+}
+
+.article-body h2, 
+.article-body h3, 
+.article-body h4 {
+    color: #1a1a1a;
+    font-weight: 700;
+    margin-top: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.article-body ul, 
+.article-body ol {
+    margin-bottom: 1.4rem;
+    padding-left: 1.6rem;
+}
+
+.article-body li {
+    margin-bottom: 0.45rem;
+}
+
+.article-body blockquote {
+    border-left: 4px solid var(--brand-primary);
+    background-color: var(--brand-light);
+    padding: 14px 20px;
+    margin: 1.5rem 0;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: #4a5568;
+}
+
+.article-body pre, 
+.article-body code {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    background-color: #f7fafc;
+    border-radius: 6px;
+}
+
+.article-body code {
+    padding: 0.2rem 0.45rem;
+    color: #d9480f;
+    font-size: 0.9em;
+}
+
+.article-body pre {
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    margin: 1.5rem 0;
+}
+
+.article-body pre code {
+    padding: 0;
+    color: inherit;
+    background-color: transparent;
+}
+
+.article-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1.2rem 0;
+}
+
+.article-body table {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-collapse: collapse;
+}
+
+.article-body table th, 
+.article-body table td {
+    border: 1px solid #e2e8f0;
+    padding: 10px 14px;
+}
+
+.article-body table th {
+    background-color: var(--brand-light);
+    color: #1a1a1a;
+}
+
+/* --------------------------------------------------------------------------
+   Newsletter Subscription Box & Input Group
+   -------------------------------------------------------------------------- */
+.newsletter-input-group {
+    border: 1.5px solid var(--brand-border-alt);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    background-color: #ffffff;
+}
+
+.newsletter-input-group:focus-within {
+    border-color: var(--brand-primary) !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 117, 24, 0.2) !important;
+}
+
+.newsletter-input-group .newsletter-input {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background: transparent !important;
+    color: #212529;
+    font-size: 0.95rem;
+}
+
+.newsletter-input-group .newsletter-input:focus {
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.newsletter-btn {
+    background-color: var(--brand-primary);
+    color: #ffffff !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    min-width: 130px;
+    padding: 0.65rem 1.6rem !important;
+    border: none;
+    transition: all 0.25s ease;
+}
+
+.newsletter-btn:hover {
+    background-color: var(--brand-primary-hover);
+    box-shadow: 0 4px 12px rgba(255, 117, 24, 0.35);
+}
+
+@media (max-width: 480px) {
+    .newsletter-input-group {
+        flex-direction: column;
+        border-radius: 16px !important;
+        padding: 6px !important;
+        gap: 8px;
+    }
+    .newsletter-btn {
+        width: 100%;
+        border-radius: 12px !important;
+    }
+}
+
+

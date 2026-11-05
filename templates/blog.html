@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - DevDiary{% endblock %}
+
+{% block content %}
+    <!-- Blog Hero Section -->
+    <div class="position-relative py-5" style="background-image: url('{{ url_for('static', filename='assets/images/pages/contact-hero-faded.png') }}'); background-size: cover; background-position: center; min-height: 240px;">
+        <div class="container text-center py-4">
+            <h1 class="display-5 display-md-4 fw-bold mb-2 text-dark" style="letter-spacing: 1px;">Our <span style="color: #ff7518;">Blog</span></h1>
+            <p class="mx-auto mb-3 fs-6" style="max-width: 650px; color: #8e7360;">
+                Level up your coding skills with our latest web dev, UI/UX, and backend tutorials.
+            </p>
+            <!-- Breadcrumbs -->
+            <div class="d-flex justify-content-center align-items-center text-uppercase fw-bold small" style="font-size: 13px;">
+                <a href="{{ url_for('index') }}" class="text-decoration-none" style="color: #ff7518;">HOME</a>
+                <span class="text-muted mx-2"><i class="fas fa-chevron-right" style="font-size: 10px;"></i></span>
+                <span class="text-secondary">BLOG</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container my-4 my-md-5">
+        <!-- Active Filter Alert / Banner -->
+        {% if category or search_query %}
+        <div class="alert alert-light border shadow-sm rounded-4 d-flex flex-wrap justify-content-between align-items-center mb-4 p-3" style="background-color: #fff9f5; border-color: #ffe5d3 !important;">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-filter me-2" style="color: #ff7518;"></i>
+                <span>
+                    Active filter: 
+                    {% if category %}<strong>Category: {{ category }}</strong>{% endif %}
+                    {% if category and search_query %} | {% endif %}
+                    {% if search_query %}<strong>Search: "{{ search_query }}"</strong>{% endif %}
+                </span>
+            </div>
+            <a href="{{ url_for('blog') }}" class="btn btn-sm btn-outline-danger rounded-pill px-3 mt-2 mt-sm-0">
+                <i class="fas fa-times me-1"></i> Clear Filter
+            </a>
+        </div>
+        {% endif %}
+
+        <div class="row g-4 g-lg-5">
+            <!-- 1. LEFT SIDE: Main Posts Area (8 Columns) -->
+            <div class="col-12 col-lg-8">
+                <div class="row g-4">
+                    {% for post in posts %}
+                    <div class="col-12 col-md-6 reveal-on-scroll delay-{{ loop.index }}00">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden blog-card bg-white">
+                            
+                            <!-- Floating Date Badge -->
+                            <div class="position-absolute top-0 end-0 m-3" style="z-index: 2;">
+                                <div class="bg-white rounded-3 shadow text-center p-2" style="border-top: 3px solid #ff7518; min-width: 52px;">
+                                    <span class="d-block fw-bolder fs-4 text-dark lh-1">
+                                        {% if post.created_at %}{{ post.created_at.strftime('%d') }}{% else %}--{% endif %}
+                                    </span>
+                                    <span class="d-block text-uppercase small text-muted fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">
+                                        {% if post.created_at %}{{ post.created_at.strftime('%b') }}{% else %}POST{% endif %}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Image container with Zoom Effect -->
+                            <div class="overflow-hidden position-relative" style="height: 210px;">
+                                <img src="{{ url_for('static', filename='assets/images/' ~ (post.image if (post.image and post.image.startswith('posts/')) else ('posts/' ~ (post.image if post.image else 'blog1.jpg')))) }}" 
+                                     class="card-img-top w-100 h-100 zoom-img" 
+                                     alt="{{ post.title }}" 
+                                     style="object-fit: cover;">
+                                <div class="position-absolute bottom-0 start-0 m-3" style="z-index: 2;">
+                                    <span class="badge rounded-pill px-3 py-2 shadow-sm" style="background-color: #ff7518; color: #fff; font-weight: 500;">
+                                        {{ post.category }}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Content -->
+                            <div class="card-body p-4 bg-white d-flex flex-column">
+                                <h5 class="fw-bold text-dark mb-2 lh-base">{{ post.title }}</h5>
+                                <p class="text-muted small mb-4 flex-grow-1">
+                                    {{ post.content | striptags | truncate(110, true, '...') }}
+                                </p>
+                                <a href="{{ url_for('single_post', id=post.id) }}" class="d-inline-flex align-items-center text-decoration-none fw-bold" style="color: #ff7518;">
+                                    Read Article <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-12 text-center py-5 my-4">
+                        <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background-color: #fff9f5; color: #ff7518;">
+                            <i class="fas fa-search fa-2x"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark mb-2">No Articles Found</h4>
+                        <p class="text-muted fs-6 mx-auto" style="max-width: 480px;">
+                            We couldn't find any articles matching your criteria. Try searching with different keywords or browse all categories.
+                        </p>
+                        <a href="{{ url_for('blog') }}" class="btn text-white fw-bold px-4 py-2 rounded-pill mt-2" style="background-color: #ff7518;">
+                            View All Articles
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination (Preserves filters) -->
+                {% if total_pages > 1 %}
+                <div class="mt-5 pt-3">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center align-items-center gap-1 gap-sm-2 mb-0">
+                            
+                            <!-- Previous Button -->
+                            <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+                                <a class="page-link rounded-circle border-0 d-flex align-items-center justify-content-center shadow-sm page-btn-custom" 
+                                   href="{% if page > 1 %}{{ url_for('blog', page=page-1, category=category if category else None, q=search_query if search_query else None) }}{% else %}#{% endif %}" 
+                                   tabindex="{% if page <= 1 %}-1{% else %}0{% endif %}" 
+                                   style="background-color: #fff9f5; color: {% if page <= 1 %}#ced4da{% else %}#ff7518{% endif %};" 
+                                   aria-label="Previous">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                            
+                            <!-- Page Numbers -->
+                            {% for p in range(1, total_pages + 1) %}
+                            <li class="page-item {% if p == page %}active{% endif %}">
+                                <a class="page-link rounded-circle border-0 d-flex align-items-center justify-content-center shadow-sm fw-bold page-btn-custom" 
+                                   href="{{ url_for('blog', page=p, category=category if category else None, q=search_query if search_query else None) }}" 
+                                   style="{% if p == page %}background-color: #ff7518; color: #fff; border: 1px solid #ff7518;{% else %}background-color: #ffffff; color: #ff7518;{% endif %}">
+                                    {{ p }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                            
+                            <!-- Next Button -->
+                            <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+                                <a class="page-link rounded-circle border-0 d-flex align-items-center justify-content-center shadow-sm page-btn-custom" 
+                                   href="{% if page < total_pages %}{{ url_for('blog', page=page+1, category=category if category else None, q=search_query if search_query else None) }}{% else %}#{% endif %}" 
+                                   style="background-color: #fff9f5; color: {% if page >= total_pages %}#ced4da{% else %}#ff7518{% endif %};" 
+                                   aria-label="Next">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                            
+                        </ul>
+                    </nav>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- 2. RIGHT SIDE: Sidebar (4 Columns) -->
+            <div class="col-12 col-lg-4">
+                <!-- Author Profile Widget -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4 p-4 text-center bg-white reveal-on-scroll">
+                    <div class="mx-auto rounded-circle mb-3 overflow-hidden" style="width: 90px; height: 90px; border: 3px solid #ff7518; padding: 2px;">
+                        <img src="{{ url_for('static', filename='assets/images/pages/author.png') }}" alt="Author" class="w-100 h-100 rounded-circle" style="object-fit: cover;">
+                    </div>
+                    <h5 class="fw-bold mb-1 text-dark">Hasindu Kaveeshwara</h5>
+                    <p class="text-muted small mb-2">Full Stack Developer &amp; Writer</p>
+                    <p class="text-muted small mb-4">Sharing my journey in tech, web development, and design. Let's code the future together!</p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <a href="https://github.com" target="_blank" rel="noopener" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #fff9f5; color: #ff7518;"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com" target="_blank" rel="noopener" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #fff9f5; color: #ff7518;"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://twitter.com" target="_blank" rel="noopener" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #fff9f5; color: #ff7518;"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <!-- Categories Widget -->
+                <div class="card border-0 shadow-sm rounded-4 mb-4 p-4 bg-white reveal-on-scroll delay-200">
+                    <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+                        <h5 class="fw-bold text-dark mb-0">Categories</h5>
+                        {% if category %}
+                        <a href="{{ url_for('blog') }}" class="small text-decoration-none text-muted">All</a>
+                        {% endif %}
+                    </div>
+                    <ul class="list-unstyled mb-0">
+                        {% if categories %}
+                            {% for cat in categories %}
+                            <li class="mb-2">
+                                <a href="{{ url_for('blog', category=cat.category) }}" 
+                                   class="text-decoration-none d-flex justify-content-between align-items-center p-2 rounded-3 {% if category == cat.category %}fw-bold text-white{% else %}text-muted{% endif %}" 
+                                   style="{% if category == cat.category %}background-color: #ff7518;{% else %}transition: all 0.2s;{% endif %}">
+                                    <span>
+                                        <i class="fas fa-chevron-right me-2" style="font-size: 0.75rem; {% if category == cat.category %}color: #fff;{% else %}color: #ff7518;{% endif %}"></i> 
+                                        {{ cat.category }}
+                                    </span>
+                                    <span class="badge rounded-pill" style="{% if category == cat.category %}background-color: #ffffff; color: #ff7518;{% else %}background-color: #fff9f5; color: #ff7518; border: 1px solid #ffe5d3;{% endif %} font-size: 0.75rem;">
+                                        {{ cat.post_count }}
+                                    </span>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="text-muted small py-2">No categories found.</li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <!-- Popular Tags Widget -->
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                    <h5 class="fw-bold mb-3 border-bottom pb-2 text-dark">Popular Tags</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{{ url_for('blog', q='HTML5') }}" class="btn btn-sm rounded-pill fw-semibold px-3" style="background-color: #fff9f5; color: #ff7518; border: 1px solid #ffe5d3;">#HTML5</a>
+                        <a href="{{ url_for('blog', q='Python') }}" class="btn btn-sm rounded-pill fw-semibold px-3" style="background-color: #fff9f5; color: #ff7518; border: 1px solid #ffe5d3;">#Python</a>
+                        <a href="{{ url_for('blog', q='React') }}" class="btn btn-sm rounded-pill fw-semibold px-3" style="background-color: #fff9f5; color: #ff7518; border: 1px solid #ffe5d3;">#ReactJS</a>
+                        <a href="{{ url_for('blog', q='Bootstrap') }}" class="btn btn-sm rounded-pill fw-semibold px-3" style="background-color: #fff9f5; color: #ff7518; border: 1px solid #ffe5d3;">#Bootstrap</a>
+                        <a href="{{ url_for('blog', q='Database') }}" class="btn btn-sm rounded-pill fw-semibold px-3" style="background-color: #fff9f5; color: #ff7518; border: 1px solid #ffe5d3;">#Database</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

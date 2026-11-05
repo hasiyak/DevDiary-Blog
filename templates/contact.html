@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - DevDiary{% endblock %}
+
+{% block content %}
+
+    <!-- Page Header / Hero Section -->
+    <div class="position-relative py-5" style="background-image: url('{{ url_for('static', filename='assets/images/pages/contact-hero-faded.png') }}'); background-size: cover; background-position: center; min-height: 240px;">
+        <div class="container text-center py-4">
+            <h1 class="display-5 display-md-4 fw-bold mb-2 text-dark" style="letter-spacing: 1px;">Contact <span style="color: #ff7518;">Us</span></h1>
+            <p class="mx-auto mb-3 fs-6" style="max-width: 650px; color: #8e7360;">
+                Have a question, feedback, or want to collaborate? Reach out to us and let's talk!
+            </p>
+            <!-- Breadcrumbs -->
+            <div class="d-flex justify-content-center align-items-center text-uppercase fw-bold small" style="font-size: 13px;">
+                <a href="{{ url_for('index') }}" class="text-decoration-none" style="color: #ff7518;">HOME</a>
+                <span class="text-muted mx-2"><i class="fas fa-chevron-right" style="font-size: 10px;"></i></span>
+                <span class="text-secondary">CONTACT US</span>
+            </div>
+        </div>
+    </div>        
+
+    <!-- Main Content -->
+    <div class="container my-4 my-md-5">
+
+        <!-- Contact Details Cards Section -->
+        <div class="row g-4 text-center mb-5 pb-3">
+            <!-- Address Card -->
+            <div class="col-12 col-md-4 reveal-on-scroll delay-100">
+                <div class="card border-0 shadow-sm rounded-4 h-100 p-4 contact-hover-card bg-white">
+                    <div class="card-body p-2 d-flex flex-column align-items-center">
+                        <div class="rounded-circle contact-icon-circle d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 60px; height: 60px; background-color: #fff9f5;">
+                            <img src="{{ url_for('static', filename='assets/images/pages/address-img.png') }}" alt="Address" style="width: 35px; height: 35px; object-fit: contain;">
+                        </div>
+                        <h5 class="fw-bold mb-2 text-dark">Physical Address</h5>
+                        <p class="text-muted small mb-0 lh-lg">No. 417/A, Igala, Elpitiya,<br>Galle, Southern Province<br>Sri Lanka</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email Card -->
+            <div class="col-12 col-md-4 reveal-on-scroll delay-200">
+                <div class="card border-0 shadow-sm rounded-4 h-100 p-4 contact-hover-card bg-white">
+                    <div class="card-body p-2 d-flex flex-column align-items-center">
+                        <div class="rounded-circle contact-icon-circle d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 60px; height: 60px; background-color: #fff9f5;">
+                            <img src="{{ url_for('static', filename='assets/images/pages/email-img.png') }}" alt="Email" style="width: 35px; height: 35px; object-fit: contain;">
+                        </div>
+                        <h5 class="fw-bold mb-2 text-dark">Email Address</h5>
+                        <p class="text-muted small mb-0 lh-lg">
+                            <a href="mailto:kaveeshwarahasindu@gmail.com" class="text-decoration-none text-muted">kaveeshwarahasindu@gmail.com</a><br>
+                            <a href="mailto:info@devdiary.com" class="text-decoration-none text-muted">info@devdiary.com</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phone Card -->
+            <div class="col-12 col-md-4 reveal-on-scroll delay-300">
+                <div class="card border-0 shadow-sm rounded-4 h-100 p-4 contact-hover-card bg-white">
+                    <div class="card-body p-2 d-flex flex-column align-items-center">
+                        <div class="rounded-circle contact-icon-circle d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 60px; height: 60px; background-color: #fff9f5;">
+                            <img src="{{ url_for('static', filename='assets/images/pages/phone-img.png') }}" alt="Phone" style="width: 35px; height: 35px; object-fit: contain;">
+                        </div>
+                        <h5 class="fw-bold mb-2 text-dark">Phone Numbers</h5>
+                        <p class="text-muted small mb-0 lh-lg">
+                            <a href="tel:+94740953993" class="text-decoration-none text-muted">+94 74 095 3993</a><br>
+                            <a href="tel:+94720953990" class="text-decoration-none text-muted">+94 72 095 3990</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ & Contact Form Section -->
+        <div class="row g-4 g-lg-5 align-items-start my-2">
+            <!-- Left Side: FAQ -->
+            <div class="col-12 col-lg-6 mb-4 mb-lg-0 reveal-left">
+                <span class="badge rounded-pill px-3 py-2 mb-3 shadow-sm" style="background-color: #fff9f5; color: #ff7518; border: 1px solid #ffe5d3; font-weight: 600;">
+                    <i class="fas fa-question-circle me-1"></i> Help Center
+                </span>
+                <h2 class="fw-bold mb-3 text-dark">Frequently Asked Questions</h2>
+                <p class="text-muted mb-4 small lh-lg">Have questions about DevDiary, web development tutorials, or how to collaborate? Check out our most common answers below.</p>
+                
+                <div class="accordion" id="faqAccordion">
+                    <!-- Question 01 -->
+                    <div class="accordion-item mb-3 border-0 rounded-4 shadow-sm overflow-hidden">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                How can I contribute to DevDiary?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted small lh-lg px-4 pb-4">
+                                You can contribute by reaching out through our contact form. We welcome guest posts, tech tutorials, and project collaborations!
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 02 -->
+                    <div class="accordion-item mb-3 border-0 rounded-4 shadow-sm overflow-hidden">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                What technologies are covered here?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted small lh-lg px-4 pb-4">
+                                We mainly cover HTML5, CSS3, JavaScript, Python, Flask, Bootstrap 5, ReactJS, and modern web development architectures.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 03 -->
+                    <div class="accordion-item mb-3 border-0 rounded-4 shadow-sm overflow-hidden">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Do you provide coding tutorials and source code?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted small lh-lg px-4 pb-4">
+                                Yes! We provide step-by-step tutorials, code snippets, and UI/UX design tips for beginners and pros alike. All tutorials include clear explanations.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Contact Form Card -->
+            <div class="col-12 col-lg-6 reveal-right">
+                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white position-relative">
+                    <h3 class="fw-bold mb-2 text-dark">Get In Touch</h3>
+                    <p class="text-muted small mb-4">We would love to hear from you. Send us a message and we'll reply as soon as possible.</p>
+                    
+                    <!-- Floating Toast Notification Container -->
+                    <div id="customToast" class="position-fixed p-3" style="top: 1rem; right: 1rem; z-index: 1065; opacity: 0; visibility: hidden; transition: all 0.4s ease; transform: translateX(100%);">
+                        <div id="toastContent" class="alert d-flex align-items-center shadow-lg rounded-4 border-0 text-white px-4 py-3 mb-0" role="alert" style="min-width: 280px;">
+                            <i id="toastIcon" class="fas fa-info-circle me-3 fs-5"></i>
+                            <div id="toastText" class="fw-bold small"></div>
+                            <button type="button" class="btn-close btn-close-white ms-auto" onclick="hideToast()"></button>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <form id="contactForm" action="{{ url_for('contact') }}" method="POST" novalidate>
+                        <!-- Name Field -->
+                        <div class="mb-3">
+                            <label for="nameInput" class="form-label fw-bold text-dark small">Your Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control py-2 px-3 rounded-3 shadow-none" id="nameInput" name="name" placeholder="Hasindu Kaveeshwara" required>
+                            <div class="invalid-feedback small">Please enter your name (at least 3 characters).</div>
+                        </div>
+                        
+                        <!-- Email Field -->
+                        <div class="mb-3">
+                            <label for="emailInput" class="form-label fw-bold text-dark small">Email Address <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control py-2 px-3 rounded-3 shadow-none" id="emailInput" name="email" placeholder="kaveeshwara@example.com" required>
+                            <div class="invalid-feedback small">Please enter a valid email address.</div>
+                        </div>
+                        
+                        <!-- Subject Field -->
+                        <div class="mb-3">
+                            <label for="subjectInput" class="form-label fw-bold text-dark small">Subject <span class="text-muted fw-normal">(Optional)</span></label>
+                            <input type="text" class="form-control py-2 px-3 rounded-3 shadow-none" id="subjectInput" name="subject" placeholder="Web Development Project Inquiry">
+                            <div class="invalid-feedback small">Subject must be at least 3 characters if provided.</div>
+                        </div>
+                        
+                        <!-- Message Field -->
+                        <div class="mb-4">
+                            <label for="messageInput" class="form-label fw-bold text-dark small">Message <span class="text-danger">*</span></label>
+                            <textarea class="form-control py-2 px-3 rounded-3 shadow-none" id="messageInput" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+                            <div class="invalid-feedback small">Message must be at least 10 characters long.</div>
+                        </div>
+                        
+                        <button type="submit" class="btn text-white fw-bold py-3 w-100 rounded-3 shadow-sm btn-brand" style="background-color: #ff7518;">
+                            Send Message <i class="fas fa-paper-plane ms-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact form validation script -->
+    <script src="{{ url_for('static', filename='assets/js/contact-form-validation.js') }}"></script>
+
+    <!-- Flask Backend Alerts Handler -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            {% if error_msg %}
+                showToast("{{ error_msg }}", "error");
+            {% endif %}
+            
+            {% if success_msg %}
+                showToast("{{ success_msg }}", "success");
+                const form = document.getElementById("contactForm");
+                if (form) form.reset();
+            {% endif %}
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Create New Article - DevDiary Admin{% endblock %}
+
+{% block content %}
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1 text-dark">Create New Article</h2>
+            <p class="text-muted small mb-0">Compose and publish a new post to the DevDiary community.</p>
+        </div>
+        <a href="{{ url_for('manage_posts') }}" class="btn btn-light border fw-semibold px-4">
+            <i class="fas fa-list me-2"></i> View All Articles
+        </a>
+    </div>
+
+    <!-- Full-Width Post Creation Card -->
+    <div class="theme-card w-100 p-4 p-md-5">
+        <form action="{{ url_for('add_post') }}" method="POST" enctype="multipart/form-data">
+            <div class="row g-4">
+                <!-- Post Title -->
+                <div class="col-12 col-md-8">
+                    <label class="form-label fw-bold text-dark">Post Title <span class="text-danger">*</span></label>
+                    <input type="text" name="title" class="form-control" placeholder="e.g. Modern CSS Grid Tips and Tricks" required>
+                </div>
+
+                <!-- Category -->
+                <div class="col-12 col-md-4">
+                    <label class="form-label fw-bold text-dark">Category <span class="text-danger">*</span></label>
+                    <input class="form-control" name="category" list="categoryOptions" placeholder="Select or type..." required>
+                    <datalist id="categoryOptions">
+                        <option value="Frontend">
+                        <option value="Backend">
+                        <option value="UI/UX Design">
+                        <option value="DevOps">
+                        <option value="Python">
+                        <option value="Web Development">
+                    </datalist>
+                </div>
+
+                <!-- Cover Image -->
+                <div class="col-12">
+                    <label class="form-label fw-bold text-dark">Cover Image <span class="text-danger">*</span></label>
+                    <input type="file" id="coverImageInput" name="image" class="form-control" accept="image/png, image/jpeg, image/jpg, image/webp" required>
+                    <div class="form-text text-muted small mt-1">
+                        Supported formats: JPG, PNG, WEBP. Stored under <code class="text-danger">static/assets/images/posts/</code>.
+                    </div>
+                    
+                    <!-- Live Image Preview Container -->
+                    <div id="imagePreviewContainer" class="mt-3 rounded-3 overflow-hidden border d-none shadow-sm" style="max-height: 280px; max-width: 480px; background-color: #f8f9fa;">
+                        <img id="imagePreview" src="#" alt="Preview" class="w-100" style="object-fit: cover; max-height: 280px;">
+                    </div>
+                </div>
+
+                <!-- Article Content (CKEditor 5) -->
+                <div class="col-12">
+                    <label class="form-label fw-bold text-dark">Article Content <span class="text-danger">*</span></label>
+                    <textarea id="editor" name="content" class="form-control" rows="14" placeholder="Write your article content here..."></textarea>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="col-12 d-flex justify-content-end gap-2 mt-4">
+                    <button type="reset" class="btn btn-light border px-4 py-2 fw-semibold">Clear</button>
+                    <button type="submit" class="btn btn-brand px-4 py-2 fw-semibold">
+                        <i class="fas fa-paper-plane me-2"></i> Publish Article
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <!-- CKEditor 5 & Shared Initializers -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setupImagePreview('coverImageInput', 'imagePreviewContainer', 'imagePreview');
+            initCKEditor('#editor');
+        });
+    </script>
+{% endblock %}

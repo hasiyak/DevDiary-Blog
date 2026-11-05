@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block title %}{% if post %}{{ post.title }} - DevDiary{% else %}Article Not Found - DevDiary{% endif %}{% endblock %}
+
+{% block content %}
+
+    {% if post %}
+        <!-- Article Header Section -->
+        <div class="position-relative py-5" style="background-image: url('{{ url_for('static', filename='assets/images/pages/contact-hero-faded.png') }}'); background-size: cover; background-position: center; min-height: 220px;">
+            <div class="container py-3 text-center">
+                <!-- Breadcrumbs -->
+                <div class="d-flex justify-content-center align-items-center text-uppercase fw-bold mb-3 small" style="font-size: 13px;">
+                    <a href="{{ url_for('index') }}" class="text-decoration-none" style="color: #ff7518;">HOME</a>
+                    <span class="text-muted mx-2"><i class="fas fa-chevron-right" style="font-size: 10px;"></i></span>
+                    <a href="{{ url_for('blog') }}" class="text-decoration-none" style="color: #ff7518;">BLOG</a>
+                    <span class="text-muted mx-2"><i class="fas fa-chevron-right" style="font-size: 10px;"></i></span>
+                    <span class="text-secondary">ARTICLE</span>
+                </div>
+                
+                <h1 class="display-6 display-md-5 fw-bold mb-3 text-dark mx-auto lh-sm" style="max-width: 850px;">
+                    {{ post.title }}
+                </h1>
+                
+                <!-- Meta Info -->
+                <div class="d-flex flex-wrap justify-content-center align-items-center gap-3 gap-md-4 mt-3 text-muted small">
+                    <div class="d-flex align-items-center">
+                        <img src="{{ url_for('static', filename='assets/images/pages/author.png') }}" alt="Author" class="rounded-circle me-2" style="width: 36px; height: 36px; object-fit: cover; border: 2px solid #ff7518;">
+                        <span class="fw-bold text-dark">Hasindu Kaveeshwara</span>
+                    </div>
+                    <div>
+                        <i class="far fa-calendar-alt me-1" style="color: #ff7518;"></i> 
+                        {% if post.created_at %}{{ post.created_at.strftime('%b %d, %Y') }}{% else %}Recent{% endif %}
+                    </div>
+                    <div>
+                        <i class="far fa-folder-open me-1" style="color: #ff7518;"></i> 
+                        <a href="{{ url_for('blog', category=post.category) }}" class="text-decoration-none text-muted">{{ post.category }}</a>
+                    </div>
+                    <div>
+                        <i class="far fa-comments me-1" style="color: #ff7518;"></i> 
+                        {{ comments|length }} Comments
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container my-4 my-md-5">
+            <div class="row g-4 g-lg-5">
+                
+                <!-- 1. LEFT SIDE: Main Article Content -->
+                <div class="col-12 col-lg-8">
+                    
+                    <!-- Feature Image -->
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4 reveal-on-scroll">
+                        <img src="{{ url_for('static', filename='assets/images/' ~ (post.image if (post.image and post.image.startswith('posts/')) else ('posts/' ~ (post.image if post.image else 'blog1.jpg')))) }}" 
+                             alt="{{ post.title }}" 
+                             class="w-100" 
+                             style="max-height: 440px; object-fit: cover;">
+                    </div>
+                    
+                    <!-- Article Body Card -->
+                    <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm mb-5 reveal-on-scroll delay-100">
+                        
+                        <!-- Article Body Content -->
+                        <div class="article-body mb-4">{{ post.content | safe }}</div>
+                        
+                        <!-- Tags, Like & Share Section -->
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mt-5 pt-4 border-top">
+                            <!-- Like & Category Badge -->
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <button id="likeBtn" class="btn rounded-pill d-flex align-items-center gap-2 px-3 py-2 shadow-sm" style="background-color: #fff9f5; color: #ff7518; border: 1px solid #ffe5d3; transition: all 0.25s;" data-post-id="{{ post.id }}">
+                                    <i id="heartIcon" class="fas fa-heart"></i>
+                                    <span class="fw-bold" id="likeCount">{% if post.likes %}{{ post.likes }}{% else %}0{% endif %}</span>
+                                    <span>Likes</span>
+                                </button>
+
+                                <span class="badge rounded-pill px-3 py-2" style="background-color: #fff9f5; color: #ff7518; border: 1px solid #ffe5d3;">#{{ post.category }}</span>
+                                <span class="badge rounded-pill px-3 py-2" style="background-color: #fff9f5; color: #ff7518; border: 1px solid #ffe5d3;">#WebDev</span>
+                            </div>
+
+                            <!-- Social Share Icons -->
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="fw-bold text-dark small me-1">Share:</span>
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" target="_blank" rel="noopener" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px; background-color: #1877F2; color: #fff;" aria-label="Share on Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="https://twitter.com/intent/tweet?url={{ request.url }}&text={{ post.title }}" target="_blank" rel="noopener" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px; background-color: #1DA1F2; color: #fff;" aria-label="Share on Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.url }}&title={{ post.title }}" target="_blank" rel="noopener" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px; background-color: #0A66C2; color: #fff;" aria-label="Share on LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Back Button -->
+                        <div class="mt-4 pt-3 text-center">
+                            <a href="{{ url_for('blog') }}" class="btn text-white fw-bold px-4 py-2 rounded-pill shadow-sm" style="background-color: #343a40;">
+                                <i class="fas fa-arrow-left me-2"></i> Back to Articles
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Comments Section -->
+                    <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm mb-5 reveal-on-scroll">
+                        <!-- Success Message -->
+                        {% if success_msg %}
+                            <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+                                <i class="fas fa-check-circle me-2"></i> {{ success_msg }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endif %}
+
+                        {% if error_msg %}
+                            <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+                                <i class="fas fa-exclamation-circle me-2"></i> {{ error_msg }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endif %}
+
+                        <h4 class="fw-bold mb-4 border-bottom pb-3 text-dark">
+                            <i class="fas fa-comments me-2" style="color: #ff7518;"></i> {{ comments|length }} Comments
+                        </h4>
+                        
+                        <!-- Loop through Comments -->
+                        {% for c in comments %}
+                        <div class="d-flex mb-4 border-bottom pb-3">
+                            <div class="flex-shrink-0">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white shadow-sm" style="width: 44px; height: 44px; background-color: #ff7518; font-size: 1.1rem;">
+                                    {{ (c.name|default('U'))[0]|upper }}
+                                </div>
+                            </div>
+                            <div class="ms-3 flex-grow-1">
+                                <h6 class="fw-bold mb-1 text-dark">
+                                    {{ c.name }} 
+                                    <span class="text-muted small fw-normal ms-2">
+                                        {% if c.created_at %}{{ c.created_at.strftime('%b %d, %Y') }}{% endif %}
+                                    </span>
+                                </h6>
+                                <p class="text-muted small mb-0 lh-base" style="word-break: break-word;">{{ c.comment }}</p>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="text-center py-4 my-2 text-muted">
+                            <i class="far fa-comment-dots fa-2x mb-2" style="color: #ff7518; opacity: 0.5;"></i>
+                            <p class="mb-0 small">No comments yet. Be the first to share your thoughts!</p>
+                        </div>
+                        {% endfor %}
+                        
+                        <!-- Comment Form -->
+                        <div class="mt-5 pt-3 border-top">
+                            <h5 class="fw-bold mb-3 text-dark">Leave a Reply</h5>
+                            <form method="POST" action="{{ url_for('single_post', id=post.id) }}">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label fw-bold text-dark small">Your Name <span class="text-danger">*</span></label>
+                                        <input type="text" name="name" class="form-control bg-light border-0 py-2 px-3 rounded-3 shadow-none" placeholder="Hasindu Kaveeshwara" required>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label fw-bold text-dark small">Your Email <span class="text-danger">*</span></label>
+                                        <input type="email" name="email" class="form-control bg-light border-0 py-2 px-3 rounded-3 shadow-none" placeholder="kaveeshwara@example.com" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label fw-bold text-dark small">Your Comment <span class="text-danger">*</span></label>
+                                        <textarea name="comment" class="form-control bg-light border-0 py-2 px-3 rounded-3 shadow-none" rows="4" placeholder="Write your thoughts here..." required></textarea>
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <button type="submit" class="btn text-white fw-bold px-4 py-2 rounded-pill shadow-sm btn-brand" style="background-color: #ff7518;">
+                                            Post Comment <i class="fas fa-paper-plane ms-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. RIGHT SIDE: Sidebar -->
+                <div class="col-12 col-lg-4">
+                    <!-- Author Profile Card -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-4 p-4 text-center bg-white reveal-on-scroll">
+                        <div class="mx-auto rounded-circle mb-3 overflow-hidden" style="width: 90px; height: 90px; border: 3px solid #ff7518; padding: 2px;">
+                            <img src="{{ url_for('static', filename='assets/images/pages/author.png') }}" alt="Author" class="w-100 h-100 rounded-circle" style="object-fit: cover;">
+                        </div>
+                        <h5 class="fw-bold mb-1 text-dark">Hasindu Kaveeshwara</h5>
+                        <p class="text-muted small mb-2">Full Stack Developer &amp; Writer</p>
+                        <p class="text-muted small mb-4">Sharing my journey in tech, web development, and design. Let's code the future together!</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="https://github.com" target="_blank" rel="noopener" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #fff9f5; color: #ff7518;"><i class="fab fa-github"></i></a>
+                            <a href="https://linkedin.com" target="_blank" rel="noopener" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #fff9f5; color: #ff7518;"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://twitter.com" target="_blank" rel="noopener" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #fff9f5; color: #ff7518;"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Categories Widget -->
+                    <div class="card border-0 shadow-sm rounded-4 mb-4 p-4 bg-white reveal-on-scroll delay-200">
+                        <h5 class="fw-bold mb-3 border-bottom pb-2 text-dark">Categories</h5>
+                        <ul class="list-unstyled mb-0">
+                            {% if categories %}
+                                {% for cat in categories %}
+                                <li class="mb-2">
+                                    <a href="{{ url_for('blog', category=cat.category) }}" 
+                                       class="text-decoration-none d-flex justify-content-between align-items-center p-2 rounded-3 text-muted" 
+                                       style="transition: all 0.2s;">
+                                        <span>
+                                            <i class="fas fa-chevron-right me-2" style="font-size: 0.75rem; color: #ff7518;"></i> 
+                                            {{ cat.category }}
+                                        </span>
+                                        <span class="badge rounded-pill" style="background-color: #fff9f5; color: #ff7518; border: 1px solid #ffe5d3; font-size: 0.75rem;">
+                                            {{ cat.post_count }}
+                                        </span>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            {% else %}
+                                <li class="text-muted small py-2">No categories found.</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    {% else %}
+        <!-- Article Not Found State -->
+        <div class="container text-center py-5 my-5">
+            <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background-color: #fee2e2; color: #ef4444;">
+                <i class="fas fa-exclamation-triangle fa-2x"></i>
+            </div>
+            <h2 class="fw-bold text-dark mb-2">Article Not Found</h2>
+            <p class="text-muted fs-6 mx-auto mb-4" style="max-width: 480px;">The article you are looking for does not exist or may have been removed.</p>
+            <a href="{{ url_for('blog') }}" class="btn text-white fw-bold px-4 py-2 rounded-pill shadow-sm" style="background-color: #ff7518;">
+                <i class="fas fa-arrow-left me-2"></i> Browse All Articles
+            </a>
+        </div>
+    {% endif %}
+
+    <script src="{{ url_for('static', filename='assets/js/like.js') }}"></script>
+{% endblock %}

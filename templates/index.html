@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block title %}DevDiary - Code, Build, and Grow Together{% endblock %}
+
+{% block content %}
+
+    <!-- 1. Hero Section -->
+    <section class="position-relative py-5" style="background-image: url('{{ url_for('static', filename='assets/images/pages/hero-image.png') }}'); background-size: cover; background-position: right center; min-height: 500px;">
+        <!-- Semi-transparent overlay for mobile readability -->
+        <div class="position-absolute top-0 start-0 w-100 h-100 hero-gradient-overlay" style="z-index: 1;"></div>
+        
+        <div class="container position-relative py-4 py-lg-5" style="z-index: 2;">
+            <div class="row align-items-center gx-lg-5">
+                <div class="col-lg-7 col-xl-6 text-center text-lg-start">
+                    <!-- Live Pulsing Badge -->
+                    <span class="badge rounded-pill px-3 py-2 mb-3 shadow-sm d-inline-flex align-items-center" style="background-color: #fff9f5; color: #ff7518; border: 1px solid #ffe5d3; font-weight: 600;">
+                        <span class="pulse-dot me-2"></span>
+                        <i class="fas fa-code me-1"></i> Developer Community &amp; Tutorials
+                    </span>
+
+                    <h1 class="display-5 display-md-4 fw-bold mb-3 text-dark lh-sm">
+                        Code, Build, and <span class="gradient-shimmer-text">Grow Together</span>
+                    </h1>
+                    
+                    <p class="lead text-muted mb-4 pe-lg-4 fs-6 fs-md-5">
+                        DevDiary is your ultimate destination for the latest in web development, coding tutorials, and tech insights. Join our community of passionate developers.
+                    </p>
+
+                    <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3">
+                        <a href="{{ url_for('blog') }}" class="btn text-white fw-bold px-4 py-3 shadow-sm btn-brand rounded-3">
+                            Explore Articles <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                        <a href="{{ url_for('about') }}" class="btn fw-bold px-4 py-3 rounded-3 shadow-sm view-all-btn">
+                            About DevDiary
+                        </a>
+                    </div>
+
+                    <!-- Ambient Floating Highlights -->
+                    <div class="d-none d-sm-flex flex-wrap justify-content-center justify-content-lg-start gap-3 mt-4 pt-2">
+                        <div class="floating-hero-badge px-3 py-2 rounded-pill bg-white shadow-sm border small fw-semibold text-dark">
+                            <i class="fas fa-fire text-danger me-2"></i> Trending Tech Articles
+                        </div>
+                        <div class="floating-hero-badge-alt px-3 py-2 rounded-pill bg-white shadow-sm border small fw-semibold text-dark">
+                            <i class="fas fa-check-circle text-success me-2"></i> 100% Free Tutorials
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Wrapper -->
+    <div class="container my-4 my-md-5">     
+        <!-- 2. Latest Articles Section -->
+        <section class="mb-5 pb-3">    
+            <!-- Section Header -->
+            <div class="text-center mb-5 mt-2 reveal-on-scroll">
+                <h6 class="fw-bold text-uppercase mb-2" style="color: #ff7518; letter-spacing: 2px;">What's New</h6>
+                <h2 class="display-6 display-md-5 fw-bold text-dark mb-3">Latest Articles</h2>
+                <div class="mx-auto mb-3" style="height: 4px; width: 60px; background-color: #ff7518; border-radius: 2px;"></div>
+                <p class="text-muted mx-auto fs-6" style="max-width: 650px;">
+                    Explore our most recent tutorials, tips, and insights on web development. Stay updated with the ever-evolving tech landscape and elevate your coding skills.
+                </p>
+            </div>
+
+            <!-- Cards Grid Container -->
+            <div class="row g-4">
+                {% for post in posts %}
+                <div class="col-12 col-md-6 col-lg-4 reveal-on-scroll delay-{{ loop.index }}00">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden blog-card bg-white">
+                        <div class="overflow-hidden position-relative" style="height: 210px;">
+                            <img src="{{ url_for('static', filename='assets/images/' ~ (post.image if (post.image and post.image.startswith('posts/')) else ('posts/' ~ (post.image if post.image else 'blog1.jpg')))) }}" 
+                                 class="card-img-top w-100 h-100 zoom-img" 
+                                 alt="{{ post.title }}" 
+                                 style="object-fit: cover;">
+                            <div class="position-absolute bottom-0 start-0 m-3" style="z-index: 2;">
+                                <span class="badge rounded-pill px-3 py-2 shadow-sm" style="background-color: #ff7518; color: #fff; font-weight: 500;">
+                                    {{ post.category }}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body p-4 d-flex flex-column">
+                            <h5 class="card-title fw-bold text-dark mb-2 lh-base">{{ post.title }}</h5>
+                            <p class="card-text text-muted small mb-4 flex-grow-1">
+                                {{ post.content | striptags | truncate(110, true, '...') }}
+                            </p>
+                            
+                            <!-- Post link -->
+                            <a href="{{ url_for('single_post', id=post.id) }}" class="text-decoration-none fw-bold d-inline-flex align-items-center" style="color: #ff7518;">
+                                Read More <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="col-12 text-center py-5 my-3 reveal-on-scroll">
+                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 80px; height: 80px; background-color: #fff9f5; color: #ff7518;">
+                        <i class="fas fa-newspaper fa-2x"></i>
+                    </div>
+                    <h4 class="fw-bold text-dark mb-2">No Articles Published Yet</h4>
+                    <p class="text-muted fs-6 mx-auto" style="max-width: 500px;">
+                        We are working on some exciting new content. Stay tuned for our latest updates, tech insights, and tutorials!
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- View All Button -->
+            <div class="text-center mt-5 reveal-on-scroll">
+                <a href="{{ url_for('blog') }}" class="btn fw-bold px-4 px-md-5 py-3 rounded-pill shadow-sm view-all-btn">
+                    View All Articles <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </section>
+
+        <!-- 3. Top Categories Section -->
+        <section class="my-5 py-4 text-center">
+            <div class="reveal-on-scroll">
+                <span class="badge rounded-pill px-3 py-2 mb-3" style="background-color: #fff9f5; color: #ff7518; border: 1px solid #ff7518;">Explore Topics</span>
+                <h2 class="display-6 display-md-5 fw-bold text-dark mb-3">Top Categories</h2>
+                <div class="mx-auto mb-4" style="height: 4px; width: 60px; background-color: #ff7518; border-radius: 2px;"></div>
+                <p class="text-muted mx-auto fs-6 mb-5" style="max-width: 650px;">
+                    Dive into our most popular topics, from frontend design to backend architecture. Find exactly what you need to level up your coding skills.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Frontend -->
+                <div class="col-12 col-sm-6 col-lg-3 reveal-on-scroll delay-100">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 p-4 contact-hover-card text-center position-relative" style="background-color: #fff9f5;">
+                        <div class="card-body d-flex flex-column align-items-center p-0">
+                            <div class="mb-4 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 65px; height: 65px; background-color: #ffffff; color: #ff7518;">
+                                <i class="fas fa-laptop-code fa-2x"></i>
+                            </div>
+                            <h5 class="fw-bold text-dark mb-2">Frontend</h5>
+                            <p class="text-muted small mb-4 flex-grow-1">
+                                HTML5, CSS3, JavaScript, React, Vue, and modern responsive UIs.
+                            </p>
+                            <a href="{{ url_for('blog', category='Frontend') }}" class="text-decoration-none fw-bold stretched-link" style="color: #ff7518;">
+                                View Articles &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backend -->
+                <div class="col-12 col-sm-6 col-lg-3 reveal-on-scroll delay-200">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 p-4 contact-hover-card text-center position-relative" style="background-color: #fff9f5;">
+                        <div class="card-body d-flex flex-column align-items-center p-0">
+                            <div class="mb-4 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 65px; height: 65px; background-color: #ffffff; color: #ff7518;">
+                                <i class="fas fa-server fa-2x"></i>
+                            </div>
+                            <h5 class="fw-bold text-dark mb-2">Backend</h5>
+                            <p class="text-muted small mb-4 flex-grow-1">
+                                Python, Flask, Node.js, databases, and server architecture.
+                            </p>
+                            <a href="{{ url_for('blog', category='Backend') }}" class="text-decoration-none fw-bold stretched-link" style="color: #ff7518;">
+                                View Articles &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UI/UX Design -->
+                <div class="col-12 col-sm-6 col-lg-3 reveal-on-scroll delay-300">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 p-4 contact-hover-card text-center position-relative" style="background-color: #fff9f5;">
+                        <div class="card-body d-flex flex-column align-items-center p-0">
+                            <div class="mb-4 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 65px; height: 65px; background-color: #ffffff; color: #ff7518;">
+                                <i class="fas fa-pen-nib fa-2x"></i>
+                            </div>
+                            <h5 class="fw-bold text-dark mb-2">UI/UX Design</h5>
+                            <p class="text-muted small mb-4 flex-grow-1">
+                                Figma, design systems, accessibility, and modern user experiences.
+                            </p>
+                            <a href="{{ url_for('blog', category='UI/UX Design') }}" class="text-decoration-none fw-bold stretched-link" style="color: #ff7518;">
+                                View Articles &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DevOps -->
+                <div class="col-12 col-sm-6 col-lg-3 reveal-on-scroll delay-400">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 p-4 contact-hover-card text-center position-relative" style="background-color: #fff9f5;">
+                        <div class="card-body d-flex flex-column align-items-center p-0">
+                            <div class="mb-4 rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 65px; height: 65px; background-color: #ffffff; color: #ff7518;">
+                                <i class="fas fa-cloud fa-2x"></i>
+                            </div>
+                            <h5 class="fw-bold text-dark mb-2">DevOps</h5>
+                            <p class="text-muted small mb-4 flex-grow-1">
+                                Git, Docker, CI/CD pipelines, cloud hosting, and automation.
+                            </p>
+                            <a href="{{ url_for('blog', category='DevOps') }}" class="text-decoration-none fw-bold stretched-link" style="color: #ff7518;">
+                                View Articles &rarr;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Technologies Pills -->
+        <section class="my-5 py-4 border-top border-bottom reveal-on-scroll">
+            <div class="text-center mb-4">
+                <h6 class="fw-bold text-uppercase mb-2" style="color: #ff7518; letter-spacing: 2px;">Technologies We Cover</h6>
+            </div>
+            <div class="d-flex flex-wrap justify-content-center gap-2 gap-md-3">
+                <div class="tech-pill px-3 px-sm-4 py-2 rounded-pill fw-semibold small" style="background-color: #fff9f5; color: #333; border: 1px solid #ffe5d3;">
+                    <span style="color: #ff7518; margin-right: 4px;">#</span> HTML5 &amp; CSS3
+                </div>
+                <div class="tech-pill px-3 px-sm-4 py-2 rounded-pill fw-semibold small" style="background-color: #fff9f5; color: #333; border: 1px solid #ffe5d3;">
+                    <span style="color: #ff7518; margin-right: 4px;">#</span> Bootstrap 5
+                </div>
+                <div class="tech-pill px-3 px-sm-4 py-2 rounded-pill fw-semibold small" style="background-color: #fff9f5; color: #333; border: 1px solid #ffe5d3;">
+                    <span style="color: #ff7518; margin-right: 4px;">#</span> JavaScript &amp; React
+                </div>
+                <div class="tech-pill px-3 px-sm-4 py-2 rounded-pill fw-semibold small" style="background-color: #fff9f5; color: #333; border: 1px solid #ffe5d3;">
+                    <span style="color: #ff7518; margin-right: 4px;">#</span> Python &amp; Flask
+                </div>
+                <div class="tech-pill px-3 px-sm-4 py-2 rounded-pill fw-semibold small" style="background-color: #fff9f5; color: #333; border: 1px solid #ffe5d3;">
+                    <span style="color: #ff7518; margin-right: 4px;">#</span> MySQL &amp; Databases
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 5. Community Stats Section -->
+    <section class="py-5 position-relative overflow-hidden" style="background: #1a1e24;">
+        <!-- Background illustration with overlay -->
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="background-image: url('{{ url_for('static', filename='assets/images/pages/com.png') }}'); background-size: cover; background-position: center; opacity: 0.25;"></div>
+        
+        <div class="container py-4 position-relative text-white text-center" style="z-index: 2;">
+            <div class="reveal-on-scroll">
+                <h6 class="text-uppercase mb-3 fw-bold" style="color: #ff7518; letter-spacing: 2px;">Meet Developers Around The World</h6>
+                <h2 class="display-6 display-md-5 fw-bold mb-5">Join a Global Community of <br class="d-none d-sm-inline"> Change Makers</h2>
+            </div>
+            
+            <div class="row g-4 justify-content-center">
+                <!-- Stat Card 1 -->
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 reveal-scale delay-100">
+                    <div class="p-4 rounded-4 h-100" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15);">
+                        <h2 class="display-5 fw-bold mb-1" style="color: #ff7518;" data-counter-target="10" data-counter-suffix="K+">0K+</h2>
+                        <p class="text-uppercase small fw-bold mb-0 text-white-50" style="letter-spacing: 1px;">Active Readers</p>
+                    </div>
+                </div>
+                <!-- Stat Card 2 -->
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 reveal-scale delay-200">
+                    <div class="p-4 rounded-4 h-100" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15);">
+                        <h2 class="display-5 fw-bold mb-1" style="color: #ff7518;" data-counter-target="500" data-counter-suffix="+">0+</h2>
+                        <p class="text-uppercase small fw-bold mb-0 text-white-50" style="letter-spacing: 1px;">Tutorials</p>
+                    </div>
+                </div>
+                <!-- Stat Card 3 -->
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 reveal-scale delay-300">
+                    <div class="p-4 rounded-4 h-100" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15);">
+                        <h2 class="display-5 fw-bold mb-1" style="color: #ff7518;" data-counter-target="100" data-counter-suffix="%">0%</h2>
+                        <p class="text-uppercase small fw-bold mb-0 text-white-50" style="letter-spacing: 1px;">Free Content</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Newsletter Subscription Section -->
+    <div class="container my-5 py-4">
+        <div class="card border-0 rounded-4 text-center p-4 p-md-5 shadow-sm reveal-on-scroll" style="background-color: #fffaf6; border: 1px solid #ffe5d3 !important;">
+            <div class="card-body p-0">
+                <!-- Circular Icon with paper plane icon -->
+                <div class="mx-auto mb-4 rounded-circle d-flex align-items-center justify-content-center shadow-sm paper-plane-box" style="width: 75px; height: 75px; background-color: #fff0e6; color: #ff7518;">
+                    <i class="fas fa-paper-plane fa-2x"></i>
+                </div>
+
+                <h2 class="display-6 fw-bold text-dark mb-3">Subscribe to Our Newsletter</h2>
+                <p class="text-muted mb-4 mx-auto" style="max-width: 600px; font-size: 1rem;">
+                    Get the latest web development tutorials, coding tips, and tech news delivered straight to your inbox every week. No spam, just quality content!
+                </p>
+                
+                <!-- Responsive Subscription Form -->
+                <form id="newsletterForm" class="mx-auto mt-4" style="max-width: 540px;">
+                    <div class="newsletter-input-group d-flex align-items-center rounded-pill p-1 shadow-sm">
+                        <input type="email" 
+                               id="newsletterEmail" 
+                               class="form-control newsletter-input px-3 px-sm-4 py-2 flex-grow-1" 
+                               placeholder="Enter your email address..." 
+                               required>
+                        <button type="submit" class="btn rounded-pill newsletter-btn btn-brand">
+                            Subscribe
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Newsletter feedback message container -->
+                <div id="newsletterMsg" class="mt-3 mx-auto text-center small fw-bold" style="max-width: 520px; display: none;"></div>
+                
+                <!-- Privacy Notice -->
+                <div class="mt-4 text-muted small">
+                    <i class="fas fa-shield-alt me-1 text-muted"></i> We respect your privacy. Unsubscribe at any time.
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='assets/js/subscribe.js') }}"></script>
+      
+{% endblock %}

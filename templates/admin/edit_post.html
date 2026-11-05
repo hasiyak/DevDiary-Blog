@@ -1,0 +1,104 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Edit Article - DevDiary Admin{% endblock %}
+
+{% block content %}
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1 text-dark">Edit Article</h2>
+            <p class="text-muted small mb-0">Modify and update your published post details.</p>
+        </div>
+        <a href="{{ url_for('manage_posts') }}" class="btn btn-light border fw-semibold px-4">
+            <i class="fas fa-list me-2"></i> View All Articles
+        </a>
+    </div>
+
+    {% if post %}
+    <!-- Full-Width Post Edit Card -->
+    <div class="theme-card w-100 p-4 p-md-5">
+        <form action="{{ url_for('edit_post', id=post.id) }}" method="POST" enctype="multipart/form-data">
+            <div class="row g-4">
+                <!-- Post Title -->
+                <div class="col-12 col-md-8">
+                    <label class="form-label fw-bold text-dark">Post Title <span class="text-danger">*</span></label>
+                    <input type="text" name="title" class="form-control" value="{{ post.title }}" required>
+                </div>
+
+                <!-- Category -->
+                <div class="col-12 col-md-4">
+                    <label class="form-label fw-bold text-dark">Category <span class="text-danger">*</span></label>
+                    <input class="form-control" name="category" list="categoryOptions" value="{{ post.category }}" required>
+                    <datalist id="categoryOptions">
+                        <option value="Frontend">
+                        <option value="Backend">
+                        <option value="UI/UX Design">
+                        <option value="DevOps">
+                        <option value="Python">
+                        <option value="Web Development">
+                    </datalist>
+                </div>
+
+                <!-- Cover Image (Current & New) -->
+                <div class="col-12">
+                    <label class="form-label fw-bold text-dark">Cover Image <span class="text-muted fw-normal">(Optional)</span></label>
+                    
+                    <!-- Current Image Preview -->
+                    <div class="d-flex align-items-center gap-3 mb-3 p-2 rounded-3 border" style="background-color: var(--brand-light); max-width: 480px;">
+                        <img src="{{ url_for('static', filename='assets/images/' ~ (post.image if (post.image and post.image.startswith('posts/')) else ('posts/' ~ (post.image if post.image else 'blog1.jpg')))) }}" 
+                             alt="Current Cover" 
+                             class="rounded-2 shadow-sm" 
+                             style="width: 70px; height: 50px; object-fit: cover;">
+                        <div>
+                            <span class="d-block small fw-bold text-dark">Current cover image</span>
+                            <span class="text-muted small">Choose a new file below if you wish to replace it.</span>
+                        </div>
+                    </div>
+
+                    <input type="file" id="editImageInput" name="image" class="form-control" accept="image/png, image/jpeg, image/jpg, image/webp">
+                    <div class="form-text text-muted small mt-1">
+                        Supported formats: JPG, PNG, WEBP. Stored under <code class="text-danger">static/assets/images/posts/</code>.
+                    </div>
+
+                    <!-- New Image Live Preview Container -->
+                    <div id="newImagePreviewContainer" class="mt-3 rounded-3 overflow-hidden border d-none shadow-sm" style="max-height: 280px; max-width: 480px; background-color: #f8f9fa;">
+                        <span class="d-block small text-muted p-1 ps-2 bg-light border-bottom">New selected preview:</span>
+                        <img id="newImagePreview" src="#" alt="New Preview" class="w-100" style="object-fit: cover; max-height: 280px;">
+                    </div>
+                </div>
+
+                <!-- Article Content (CKEditor 5) -->
+                <div class="col-12">
+                    <label class="form-label fw-bold text-dark">Article Content <span class="text-danger">*</span></label>
+                    <textarea id="editor" name="content" class="form-control" rows="14">{{ post.content }}</textarea>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="col-12 d-flex justify-content-end gap-2 mt-4">
+                    <a href="{{ url_for('manage_posts') }}" class="btn btn-light border px-4 py-2 fw-semibold">Cancel</a>
+                    <button type="submit" class="btn btn-brand px-4 py-2 fw-semibold">
+                        <i class="fas fa-save me-2"></i> Save Changes
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% else %}
+    <div class="theme-card w-100 p-5 text-center">
+        <h4 class="text-danger fw-bold">Article Not Found</h4>
+        <p class="text-muted small">The article you are trying to edit does not exist or has been removed.</p>
+        <a href="{{ url_for('manage_posts') }}" class="btn btn-brand mt-2">Back to Articles</a>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+    <!-- CKEditor 5 & Shared Initializers -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setupImagePreview('editImageInput', 'newImagePreviewContainer', 'newImagePreview');
+            initCKEditor('#editor');
+        });
+    </script>
+{% endblock %}

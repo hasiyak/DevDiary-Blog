@@ -1,0 +1,336 @@
+/* ==========================================================================
+   DevDiary Modern Animations & Micro-Interactions Stylesheet (animations.css)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Reading Progress Bar (Fixed Top Accent)
+   -------------------------------------------------------------------------- */
+#readingProgressBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3.5px;
+    background: linear-gradient(90deg, #ff7518, #ff9e59, #ff5722);
+    z-index: 1099;
+    transition: width 0.1s ease-out;
+    box-shadow: 0 1px 6px rgba(255, 117, 24, 0.4);
+    pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   2. Scroll-Triggered Reveal Animations (IntersectionObserver)
+   -------------------------------------------------------------------------- */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Directional Reveals */
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-left.is-revealed {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.reveal-right {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-right.is-revealed {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.reveal-scale {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-scale.is-revealed {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Stagger Delays for Grid Elements */
+.delay-100 { transition-delay: 0.1s !important; }
+.delay-200 { transition-delay: 0.2s !important; }
+.delay-300 { transition-delay: 0.3s !important; }
+.delay-400 { transition-delay: 0.4s !important; }
+
+/* --------------------------------------------------------------------------
+   3. Animated Gradient Shimmer Text
+   -------------------------------------------------------------------------- */
+.gradient-shimmer-text {
+    background: linear-gradient(90deg, #ff7518 0%, #ff9e59 25%, #ff5722 50%, #ff7518 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShine 4s linear infinite;
+    display: inline-block;
+}
+
+@keyframes gradientShine {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+/* --------------------------------------------------------------------------
+   4. Live Status Pulsing Radar Dot
+   -------------------------------------------------------------------------- */
+.pulse-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: #ff7518;
+    position: relative;
+    vertical-align: middle;
+}
+
+.pulse-dot::after {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid #ff7518;
+    animation: pulseRing 1.8s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulseRing {
+    0% {
+        transform: scale(0.6);
+        opacity: 0.9;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   5. Floating Ambient Badges in Hero Section
+   -------------------------------------------------------------------------- */
+.floating-hero-badge {
+    animation: floatBob 3.6s ease-in-out infinite;
+    display: inline-flex;
+    align-items: center;
+}
+
+.floating-hero-badge-alt {
+    animation: floatBobAlt 4.2s ease-in-out infinite;
+    display: inline-flex;
+    align-items: center;
+}
+
+@keyframes floatBob {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes floatBobAlt {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   6. Button Shimmer Light Sweep on Hover
+   -------------------------------------------------------------------------- */
+.btn-brand {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-brand::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -70%;
+    width: 40%;
+    height: 200%;
+    background: linear-gradient(
+        60deg, 
+        rgba(255, 255, 255, 0) 0%, 
+        rgba(255, 255, 255, 0.35) 50%, 
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(25deg);
+    transition: left 0.65s ease;
+    pointer-events: none;
+}
+
+.btn-brand:hover::after {
+    left: 130%;
+}
+
+/* --------------------------------------------------------------------------
+   7. Category & Contact Cards Icon Interactive Hover
+   -------------------------------------------------------------------------- */
+.contact-hover-card {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease;
+}
+
+.contact-hover-card .card-body .rounded-circle {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .contact-hover-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 32px rgba(255, 117, 24, 0.12) !important;
+        border-bottom-color: #ff7518 !important;
+    }
+
+    /* Circles containing images (e.g. contact cards): keep crisp white background & border so orange image remains 100% visible */
+    .contact-hover-card:hover .card-body .contact-icon-circle,
+    .contact-hover-card:hover .card-body .rounded-circle:has(img) {
+        transform: scale(1.12);
+        background-color: #ffffff !important;
+        border: 2px solid #ff7518 !important;
+        box-shadow: 0 8px 20px rgba(255, 117, 24, 0.25) !important;
+    }
+
+    /* Circles containing font icons (no img): turn to theme orange with white icon */
+    .contact-hover-card:hover .card-body .rounded-circle:not(.contact-icon-circle):not(:has(img)) {
+        transform: scale(1.12) rotate(6deg);
+        background-color: #ff7518 !important;
+        color: #ffffff !important;
+        box-shadow: 0 8px 18px rgba(255, 117, 24, 0.35) !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   8. Tech Pills Interactive Lift & Warm Glow
+   -------------------------------------------------------------------------- */
+.tech-pill {
+    transition: all 0.25s ease;
+    cursor: default;
+}
+
+.tech-pill:hover {
+    transform: translateY(-3px);
+    background-color: #ffffff !important;
+    border-color: #ff7518 !important;
+    box-shadow: 0 6px 16px rgba(255, 117, 24, 0.16);
+    color: #ff7518 !important;
+}
+
+/* --------------------------------------------------------------------------
+   9. Newsletter Paper Plane Float Animation
+   -------------------------------------------------------------------------- */
+.paper-plane-box {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+
+.paper-plane-box:hover {
+    transform: translateY(-6px) rotate(8deg);
+    box-shadow: 0 10px 24px rgba(255, 117, 24, 0.25) !important;
+}
+
+/* --------------------------------------------------------------------------
+   10. Floating "Back to Top" Action Button
+   -------------------------------------------------------------------------- */
+#backToTopBtn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background-color: #ff7518;
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 6px 18px rgba(255, 117, 24, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    z-index: 1040;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(16px) scale(0.9);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s ease;
+}
+
+#backToTopBtn.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+#backToTopBtn:hover {
+    background-color: #e0620f;
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 10px 24px rgba(255, 117, 24, 0.45);
+}
+
+/* --------------------------------------------------------------------------
+   11. Single Post Like Button Celebratory Pop Effect
+   -------------------------------------------------------------------------- */
+.like-pop {
+    animation: heartPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes heartPop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.22); }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+/* --------------------------------------------------------------------------
+   12. Accessibility: Reduced Motion Support
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .reveal-on-scroll,
+    .reveal-left,
+    .reveal-right,
+    .reveal-scale {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    .gradient-shimmer-text,
+    .pulse-dot::after,
+    .floating-hero-badge,
+    .floating-hero-badge-alt {
+        animation: none !important;
+    }
+}
+

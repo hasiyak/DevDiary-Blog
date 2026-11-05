@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - DevDiary{% endblock %}
+
+{% block content %}
+
+    <!-- Hero Section -->
+    <div class="position-relative py-5" style="background-image: url('{{ url_for('static', filename='assets/images/pages/contact-hero-faded.png') }}'); background-size: cover; background-position: center; min-height: 240px;">
+        <div class="container text-center py-4">
+            <h1 class="display-5 display-md-4 fw-bold mb-2 text-dark" style="letter-spacing: 1px;">About <span style="color: #ff7518;">Us</span></h1>
+            <p class="mx-auto mb-3 fs-6" style="max-width: 650px; color: #8e7360;">
+                Learn more about our journey, our vision, and the passionate community behind the code.
+            </p>   
+            <!-- Breadcrumbs -->
+            <div class="d-flex justify-content-center align-items-center text-uppercase fw-bold small" style="font-size: 13px;">
+                <a href="{{ url_for('index') }}" class="text-decoration-none" style="color: #ff7518;">HOME</a>
+                <span class="text-muted mx-2"><i class="fas fa-chevron-right" style="font-size: 10px;"></i></span>
+                <span class="text-secondary">ABOUT US</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-4 my-md-5">
+        <!-- Top Section: Text and Image -->
+        <div class="row align-items-center gy-5 gx-lg-5 mb-5 pb-3">    
+            <!-- Left side: About Text -->
+            <div class="col-12 col-lg-6 text-center text-lg-start reveal-left">
+                <span class="badge rounded-pill px-3 py-2 mb-3 shadow-sm" style="background-color: #fff9f5; color: #ff7518; border: 1px solid #ffe5d3; font-weight: 600;">
+                    <i class="fas fa-info-circle me-1"></i> Our Story
+                </span>
+                <h2 class="display-6 display-md-5 fw-bold mb-3 text-dark">Welcome to <span style="color: #ff7518;">DevDiary</span></h2>    
+                <p class="lead text-muted mb-4 fs-6 fs-md-5">
+                    Your go-to destination for the latest in tech, coding, and web development. We are passionate about building a community where developers can learn, grow, and collaborate.
+                </p>
+                <p class="text-muted mb-4">
+                    Started as a small project, DevDiary has grown into a hub for tech enthusiasts in Sri Lanka and beyond. Whether you are a beginner taking your first steps in HTML &amp; CSS, or an experienced developer exploring modern frameworks, we have something for everyone. Let's code the future together!
+                </p>
+                <!-- Contact page button -->
+                <a href="{{ url_for('contact') }}" class="btn text-white fw-bold px-4 py-3 shadow-sm btn-brand rounded-3">
+                    Get In Touch <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+
+            <!-- Right side: Image with responsive decorative frame -->
+            <div class="col-12 col-lg-6 text-center reveal-right">
+                <div class="position-relative d-inline-block w-100" style="max-width: 500px;">
+                    <!-- Decorative back frame (hidden on small devices to prevent overflow) -->
+                    <div class="position-absolute rounded-4 d-none d-md-block" style="background-color: #fff9f5; border: 2px solid #ff7518; top: 15px; left: 15px; right: -15px; bottom: -15px; z-index: 0;"></div>
+                    
+                    <!-- Main About Image -->
+                    <img src="{{ url_for('static', filename='assets/images/pages/about-img.png') }}" 
+                         alt="About DevDiary" 
+                         class="img-fluid rounded-4 shadow-lg position-relative w-100" 
+                         style="object-fit: cover; max-height: 480px; z-index: 1;">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Section: Mission, Vision, Values Cards -->
+        <div class="row g-4 text-center mt-4">
+            <!-- Mission Card -->
+            <div class="col-12 col-md-4 reveal-on-scroll delay-100">
+                <div class="card border-0 shadow-sm rounded-4 h-100 p-4 contact-hover-card bg-white">
+                    <div class="card-body p-2 d-flex flex-column align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 60px; height: 60px; background-color: #fff9f5; color: #ff7518;">
+                            <i class="fas fa-bullseye fa-2x"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3 text-dark">Our Mission</h4>
+                        <p class="text-muted small mb-0 lh-lg">To empower developers by providing high-quality, easy-to-understand tutorials and practical tech insights.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vision Card -->
+            <div class="col-12 col-md-4 reveal-on-scroll delay-200">
+                <div class="card border-0 shadow-sm rounded-4 h-100 p-4 contact-hover-card bg-white">
+                    <div class="card-body p-2 d-flex flex-column align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 60px; height: 60px; background-color: #fff9f5; color: #ff7518;">
+                            <i class="fas fa-eye fa-2x"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3 text-dark">Our Vision</h4>
+                        <p class="text-muted small mb-0 lh-lg">To become the most trusted and engaging community for web developers and software engineers in Sri Lanka.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Values Card -->
+            <div class="col-12 col-md-4 reveal-on-scroll delay-300">
+                <div class="card border-0 shadow-sm rounded-4 h-100 p-4 contact-hover-card bg-white">
+                    <div class="card-body p-2 d-flex flex-column align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 60px; height: 60px; background-color: #fff9f5; color: #ff7518;">
+                            <i class="fas fa-heart fa-2x"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3 text-dark">Our Values</h4>
+                        <p class="text-muted small mb-0 lh-lg">Continuous learning, open-source collaboration, and building clean, modern, accessible UI/UX experiences.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard - DevDiary Admin{% endblock %}
+
+{% block content %}
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h2 class="fw-bold mb-1 text-dark">Welcome Back, Admin! 👋</h2>
+            <p class="text-muted small mb-0">Here's a summary of what's happening on DevDiary today.</p>
+        </div>
+        <a href="{{ url_for('add_post') }}" class="btn-brand">
+            <i class="fas fa-plus me-2"></i> Create Post
+        </a>
+    </div>
+
+    <!-- Dashboard Stats Cards -->
+    <div class="row g-3 g-md-4 mb-4">
+        <!-- Total Posts -->
+        <div class="col-12 col-sm-6 col-lg-4">
+            <a href="{{ url_for('manage_posts') }}" class="text-decoration-none">
+                <div class="theme-card d-flex align-items-center justify-content-between h-100">
+                    <div>
+                        <p class="text-muted small text-uppercase fw-semibold mb-1">Total Posts</p>
+                        <h3 class="fw-bold mb-0 text-dark">{{ total_posts }}</h3>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Total Comments -->
+        <div class="col-12 col-sm-6 col-lg-4">
+            <a href="{{ url_for('manage_comments') }}" class="text-decoration-none">
+                <div class="theme-card d-flex align-items-center justify-content-between h-100">
+                    <div>
+                        <p class="text-muted small text-uppercase fw-semibold mb-1">Total Comments</p>
+                        <h3 class="fw-bold mb-0 text-dark">{{ total_comments }}</h3>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Subscribers -->
+        <div class="col-12 col-sm-6 col-lg-4">
+            <a href="{{ url_for('manage_subscribers') }}" class="text-decoration-none">
+                <div class="theme-card d-flex align-items-center justify-content-between h-100">
+                    <div>
+                        <p class="text-muted small text-uppercase fw-semibold mb-1">Subscribers</p>
+                        <h3 class="fw-bold mb-0 text-dark">{{ total_subscribers }}</h3>
+                    </div>
+                    <div class="icon-box">
+                        <i class="fas fa-envelope-open-text"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Recent Posts Section -->
+    <div class="theme-card w-100 p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0 text-dark">Recent Articles</h5>
+            <a href="{{ url_for('manage_posts') }}" class="small fw-semibold text-decoration-none" style="color: var(--brand-color);">
+                View All <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-borderless align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Likes</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if recent_posts %}
+                        {% for post in recent_posts %}
+                        <tr>
+                            <td>
+                                <div class="fw-bold text-dark text-truncate" style="max-width: 280px;">{{ post.title }}</div>
+                            </td>
+                            <td>
+                                <span class="badge rounded-pill" style="background-color: var(--brand-light); color: var(--brand-color); border: 1px solid var(--brand-border);">
+                                    {{ post.category }}
+                                </span>
+                            </td>
+                            <td class="text-muted small">
+                                {% if post.created_at %}{{ post.created_at.strftime('%b %d, %Y') }}{% else %}N/A{% endif %}
+                            </td>
+                            <td class="text-muted small">
+                                <i class="fas fa-heart text-danger me-1"></i> {{ post.likes or 0 }}
+                            </td>
+                            <td class="text-end">
+                                <a href="{{ url_for('manage_comments', post_id=post.id) }}" class="btn btn-sm me-1" style="background-color: #f8f9fa; color: var(--brand-color); border: 1px solid #dee2e6;" title="View Comments">
+                                    <i class="fas fa-comments"></i>
+                                </a>
+                                <a href="{{ url_for('edit_post', id=post.id) }}" class="btn btn-sm me-1" style="background-color: #f8f9fa; color: #0d6efd; border: 1px solid #dee2e6;" title="Edit Post">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" 
+                                        class="btn btn-sm" 
+                                        style="background-color: #f8f9fa; color: #dc3545; border: 1px solid #dee2e6;" 
+                                        title="Delete Article"
+                                        onclick="confirmDelete('{{ url_for('delete_post', id=post.id) }}', '{{ post.title|replace('\'', '\\\'') }}', 'Article')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                <i class="far fa-newspaper fa-2x mb-2 d-block text-muted opacity-50"></i>
+                                No articles found. Start by creating a new article!
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
