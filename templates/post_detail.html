@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} - DevDiary{% endblock %}
+{% block content %}
+<article class="mx-auto" style="max-width: 800px;">
+  <h1 class="mb-1">{{ post.title }}</h1>
+  <p class="text-muted small mb-4">Published: {{ post.created_at }}</p>
+  <div class="post-content">{{ post.content|safe }}</div>
+</article>
+{% endblock %}

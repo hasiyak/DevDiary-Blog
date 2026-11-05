@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{% if post %}Edit{% else %}New{% endif %} Post - DevDiary{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <h1 class="h3 mb-3">{% if post %}Edit{% else %}New{% endif %} Post</h1>
+    <form method="post">
+      <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input class="form-control" name="title" value="{{ post.title if post else '' }}" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Slug (optional)</label>
+        <input class="form-control" name="slug" value="{{ post.slug if post else '' }}" placeholder="auto-generated-from-title">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Content</label>
+        <textarea class="form-control d-none" id="content" name="content" rows="12" required>{{ post.content if post else '' }}</textarea>
+        <div id="editor">{{ post.content|safe if post else '' }}</div>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-primary" type="submit">Save Post</button>
+        <a class="btn btn-outline-secondary" href="{{ url_for('admin_dashboard') }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+<script>
+  const contentField = document.getElementById('content');
+  ClassicEditor.create(document.getElementById('editor'))
+    .then(editor => {
+      editor.model.document.on('change:data', () => {
+        contentField.value = editor.getData();
+      });
+      contentField.value = editor.getData();
+    })
+    .catch(error => console.error(error));
+</script>
+{% endblock %}
